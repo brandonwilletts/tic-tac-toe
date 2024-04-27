@@ -38,8 +38,9 @@ function gameController() {
         }
     ];
     let activePlayer = players[0];
+    let turns = 0;
 
-    const playGame = function() {
+    const playGame = function() {    
         console.log(`${players[0].name} versus ${players[1].name}! Let's go!`);
         board.renderBoard();
         playRound();
@@ -87,11 +88,14 @@ function gameController() {
         
         board.addMarker(playerSelectionX, playerSelectionY, activePlayer.marker);
         board.renderBoard();
+        turns++;
         
         if (checkWinner(activePlayer)) {
             console.log(`${activePlayer.name} wins!`)
-        } else {
-            console.log("No winner yet");
+        } else if (!checkWinner(activePlayer) && turns === 9){
+            console.log("Tie!");
+        } 
+        else {
             switchActivePlayer();
             playRound();
         }
