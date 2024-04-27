@@ -10,17 +10,9 @@ function gameboard() {
         }
     };
 
-    const renderBoard = function() {
-        return console.table(board);
-    }
-
-    const addMarker = function(x, y, marker) {
-        board[y][x] = marker;
-    }
-
-    const getBoard = function() {
-        return board;
-    }
+    const renderBoard = () => console.table(board);
+    const addMarker = (x, y, marker) => board[y][x] = marker;
+    const getBoard = () => board;
 
     return { renderBoard, addMarker, getBoard }
 }
