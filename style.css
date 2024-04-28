@@ -1,0 +1,189 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    --dark: #232723;
+    --light: rgb(255, 255, 255);
+    --light-trans-20: rgb(255, 255, 255, 0.2);
+    --light-trans-40: rgb(255, 255, 255, 0.4);
+}
+
+h1, h2, h3, h4, h5, h6, a, p {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    align-items: center;
+    background-color: var(--dark);
+    color: var(--light);
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+.bracket {
+    font-size: 48pt;
+    font-weight: 500;
+    color: var(--light-trans-20);
+    padding: 0 8px;
+    margin-bottom: 8px;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+button {
+    border: none;
+    outline: none;
+    font-size: 12pt;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: var(--light-trans-20);
+    color: var(--light);
+    border: 0px solid var(--light);
+}
+
+button:hover {
+    background-color: var(--light-trans-40);
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+    border-radius: 8px;
+    border: 2px solid var(--light-trans-20);
+    gap: 32px;
+}
+
+form > div {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+}
+
+form > div > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid var(--light);
+    width: 20px;
+}
+
+form button {
+    margin-top: 16px;
+}
+
+input[type="text"] {
+    border: none;
+    border-bottom: 2px solid var(--light);
+    background-color: var(--dark);
+    color: var(--light);
+    font-size: 12pt;
+    padding: 4px;
+}
+
+input[type="text"]:focus,
+input[type="text"]:active {
+    outline: none;
+    background-color: var(--light-trans-20);
+}
+
+#gameplay {
+    padding: 64px;
+}
+
+.container-scoreboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.container-scoreboard p {
+    font-size: 10pt;
+    margin-top: 4px;
+}
+
+.player1-score {
+    text-align: left;
+}
+
+.player2-score {
+    text-align: right;
+}
+
+.display {
+    padding: 16px;
+    border-radius: 8px;
+    background-color: var(--light-trans-20);
+    text-align: center;
+    width: calc(100% - 32px);
+}
+
+.marker {
+    font-size: 32pt;
+    color: var(--light-trans-20)
+}
+
+.board {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    gap: 2px;
+    border-radius: 8px;
+    background-color: var(--light);
+}
+
+.square {
+    height: 100px;
+    width: 100px;
+    background-color: var(--dark);
+}
+
+.square:hover {
+    opacity: 0.8;
+}
+
+.square:active {
+    opacity: 0.6;
+}
+
+.footer {
+    font-size: 8pt;
+    padding: 16px;
+}
+
+.footer a {
+    text-decoration: none;
+    color: var(--light-trans-40);
+}
+
+.footer a:hover {
+    color: var(--light)
+}
