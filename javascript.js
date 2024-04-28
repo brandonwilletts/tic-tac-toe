@@ -16,14 +16,19 @@ function gameController() {
     const board = gameboard();
     const players = [
         {
-            name: prompt("Player 1: Please enter your name", "Player 1"),
-            marker: 1
+            id: "player1",
+            marker: "X"
         },
         {
-            name: prompt("Player 2: Please enter your name", "Player 2"),
-            marker: 2
+            id: "player2",
+            marker: "O"
         }
     ];
+
+    const getPlayers = function() {
+        return players;
+    }
+
     let activePlayer = players[0];
     let turns = 0;
 
@@ -45,7 +50,6 @@ function gameController() {
         let diagonalToCheckTwo = [];
         
         for (let i = 0; i < boardArray.length; i++) {
-
             let rowToCheck = boardArray[i];
             rowToCheck.every(item => item === player.marker) ? result = true : null;
 
@@ -70,8 +74,8 @@ function gameController() {
     const playRound = function() {
         console.log(`${activePlayer.name}'s turn`)
 
-        let playerSelectionX = prompt("Enter X-coordinate (0-2)");
-        let playerSelectionY = prompt("Enter Y-coordinate (0-2)");
+        // let playerSelectionX = prompt("Enter X-coordinate (0-2)");
+        // let playerSelectionY = prompt("Enter Y-coordinate (0-2)");
         
         board.addMarker(playerSelectionX, playerSelectionY, activePlayer.marker);
         board.renderBoard();
@@ -88,8 +92,26 @@ function gameController() {
         }
     }
     
-    playGame();
+    return { getPlayers, playGame }
 
 }
 
-gameController();
+function screenController() {
+    const game = gameController();
+    const players = game.getPlayers();
+
+    const setPlayerNames = function() {
+        const form = document.querySelector("form");
+        form.addEventListener("submit", event => {
+            event.preventDefault();
+            players[0].name = player1.value;
+            players[1].name = player2.value;
+            console.log(`Player 1 is ${players[0].name}, Player 2 is ${players[1].name}`);
+        })
+    }
+
+    setPlayerNames();
+
+}
+
+screenController();
