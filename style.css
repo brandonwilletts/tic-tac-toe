@@ -138,6 +138,7 @@ form button {
 
 #gameplay {
     padding: 64px;
+    display: none;
 }
 
 .header {
@@ -177,9 +178,13 @@ input[type="text"]:active {
 }
 
 .square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100px;
     width: 100px;
     background-color: var(--dark);
+    font-size: 48pt;
 }
 
 .square:hover {

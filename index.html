@@ -14,7 +14,7 @@
         <div class="bracket">]</div>
     </div>
     <div class="content">
-        <div class="container">
+        <div class="container" id="form-names">
             <form>
                 <div>
                     <input type="text" name="player1" id="player1" value="Player 1">
@@ -31,26 +31,17 @@
             <div class="container-scoreboard">
                 <div class="player1-score">
                     <div class="marker">X</div>
-                    <h2>Player 1</h2>
-                    <p>Wins: 10</p>
+                    <h2 id="player1-name">Player 1</h2>
+                    <p id="player1-wins">Wins: 0</p>
                 </div>
                 <div class="player2-score">
                     <div class="marker">O</div>
-                    <h2>Player 2</h2>
-                    <p>Wins: 10</p>
+                    <h2 id="player2-name">Player 2</h2>
+                    <p id="player2-wins">Wins: 0</p>
                 </div>
             </div>
             <div class="display">Player 1's turn</div>
             <div class="board">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
             </div>
             <div>
                 <button type="button">Restart Game</button>
