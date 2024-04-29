@@ -47,39 +47,73 @@ function gameController() {
         
     const checkWinner = function() {
         const boardArray = board.getBoard();
-        let result = false;
+        let tieCheckerArray = []; 
+        let result = {
+            win: false,
+            tie: false
+        }
 
         let diagonalToCheckOne = [];
         let diagonalToCheckTwo = [];
         
         for (let i = 0; i < boardArray.length; i++) {
             let rowToCheck = boardArray[i];
-            rowToCheck.every(item => item === activePlayer.marker) ? result = true : null;
-
+            rowToCheck.every(item => item === activePlayer.marker) ? result.win = true : null;
+            
+            if (rowToCheck.some(item => item === players[0].marker) 
+            && (rowToCheck.some(item => item === players[1].marker))) {
+                tieCheckerArray.push(true);
+            } else {
+                tieCheckerArray.push(false);
+            }
+                        
             let columnToCheck = [];
             for (let j = 0; j < boardArray.length; j++) {
                 columnToCheck[j] = boardArray[j][i];
             }
-            columnToCheck.every(item => item === activePlayer.marker) ? result = true : null;
+            columnToCheck.every(item => item === activePlayer.marker) ? result.win = true : null;
+
+            if (columnToCheck.some(item => item === players[0].marker) 
+            && (columnToCheck.some(item => item === players[1].marker))) {
+                tieCheckerArray.push(true);
+            } else {
+                tieCheckerArray.push(false);
+            }
 
             diagonalToCheckOne[i] = boardArray[i][i];
             diagonalToCheckTwo[i] = boardArray[i][(boardArray.length - 1 - i)];
         }
 
-        diagonalToCheckOne.every(item => item === activePlayer.marker) ? result = true : null;
-        diagonalToCheckTwo.every(item => item === activePlayer.marker) ? result = true : null;
+        diagonalToCheckOne.every(item => item === activePlayer.marker) ? result.win = true : null;
+        diagonalToCheckTwo.every(item => item === activePlayer.marker) ? result.win = true : null;
+        
+        if (diagonalToCheckOne.some(item => item === players[0].marker) 
+        && (diagonalToCheckOne.some(item => item === players[1].marker))) {
+            tieCheckerArray.push(true);
+        } else {
+            tieCheckerArray.push(false);
+        }
 
+        if (diagonalToCheckTwo.some(item => item === players[0].marker) 
+        && (diagonalToCheckTwo.some(item => item === players[1].marker))) {
+            tieCheckerArray.push(true);
+        } else {
+            tieCheckerArray.push(false);
+        }
+
+        (tieCheckerArray.every(item => item === true)) ? result.tie = true : null;
+        
         return result
     }
 
     const playRound = function(row, col) {
         board.addMarker(row, col, activePlayer.marker);
 
-        if (checkWinner()) {
+        if (checkWinner().win) {
             gameStatus = "win";
             activePlayer.wins++;
             games++;
-        } else if (!checkWinner() && turns >= 8){
+        } else if (checkWinner().tie){
             gameStatus = "tie";
             games++;
         } 
