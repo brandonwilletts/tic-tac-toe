@@ -8,15 +8,9 @@ function gameboard() {
     const addMarker = (x, y, marker) => board[x][y] = marker;
     const getBoard = () => board;
     
-    const resetBoard = function() {
-        for (let i = 0; i < board.length; i++){
-            for (let j = 0; j < board[i].length; j++) {
-                addMarker(i, j, "");
-            }
-        }
-    }
 
-    return { addMarker, getBoard, resetBoard }
+
+    return { addMarker, getBoard }
 }
 
 function gameController() {
@@ -46,7 +40,6 @@ function gameController() {
         
     const checkWinner = function(player) {
         const boardArray = board.getBoard();
-        console.log(boardArray);
         let result = false;
 
         let diagonalToCheckOne = [];
@@ -63,15 +56,12 @@ function gameController() {
             columnToCheck.every(item => item === player.marker) ? result = true : null;
 
             diagonalToCheckOne[i] = boardArray[i][i];
-            for (let k = (boardArray[i].length - 1); k >= 0; k--){
-                diagonalToCheckTwo[i] = boardArray[i][k];
-            }
+            diagonalToCheckTwo[i] = boardArray[i][(boardArray.length - 1 - i)];
         }
 
         diagonalToCheckOne.every(item => item === player.marker) ? result = true : null;
         diagonalToCheckTwo.every(item => item === player.marker) ? result = true : null;
 
-        
         return result
     }
 
@@ -93,12 +83,21 @@ function gameController() {
     const getActivePlayer = function() {
         return activePlayer
     }
+
+    // const resetBoard = function() {
+    //     for (let i = 0; i < board.length; i++){
+    //         for (let j = 0; j < board[i].length; j++) {
+    //             addMarker(i, j, "");
+    //         }
+    //     }
+    // }
     
     return { 
         getPlayers, 
         getActivePlayer, 
         playRound,
-        getBoard: board.getBoard
+        getBoard: board.getBoard,
+        //resetBoard: board.resetBoard
      }
 
 }
