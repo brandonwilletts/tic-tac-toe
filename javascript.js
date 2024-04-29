@@ -38,7 +38,7 @@ function gameController() {
         activePlayer === players[0] ? activePlayer = players[1] : activePlayer = players[0];
     }
         
-    const checkWinner = function(player) {
+    const checkWinner = function() {
         const boardArray = board.getBoard();
         let result = false;
 
@@ -47,20 +47,20 @@ function gameController() {
         
         for (let i = 0; i < boardArray.length; i++) {
             let rowToCheck = boardArray[i];
-            rowToCheck.every(item => item === player.marker) ? result = true : null;
+            rowToCheck.every(item => item === activePlayer.marker) ? result = true : null;
 
             let columnToCheck = [];
             for (let j = 0; j < boardArray.length; j++) {
                 columnToCheck[j] = boardArray[j][i];
             }
-            columnToCheck.every(item => item === player.marker) ? result = true : null;
+            columnToCheck.every(item => item === activePlayer.marker) ? result = true : null;
 
             diagonalToCheckOne[i] = boardArray[i][i];
             diagonalToCheckTwo[i] = boardArray[i][(boardArray.length - 1 - i)];
         }
 
-        diagonalToCheckOne.every(item => item === player.marker) ? result = true : null;
-        diagonalToCheckTwo.every(item => item === player.marker) ? result = true : null;
+        diagonalToCheckOne.every(item => item === activePlayer.marker) ? result = true : null;
+        diagonalToCheckTwo.every(item => item === activePlayer.marker) ? result = true : null;
 
         return result
     }
@@ -68,10 +68,10 @@ function gameController() {
     const playRound = function(row, col) {
         board.addMarker(row, col, activePlayer.marker);
 
-        if (checkWinner(activePlayer)) {
+        if (checkWinner()) {
             console.log(`${activePlayer.name} wins!`);
             activePlayer.wins++;
-        } else if (!checkWinner(activePlayer) && turns === 9){
+        } else if (!checkWinner() && turns === 9){
             console.log("Tie!");
         } 
         else {
