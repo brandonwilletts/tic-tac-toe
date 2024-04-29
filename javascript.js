@@ -232,6 +232,7 @@ function screenController() {
             restartGameButton.textContent = "New Game";
         } else {
             setDisplayText(`${game.getActivePlayer().name}'s turn`);
+            restartGameButton.textContent = "Restart Game";
         }
         renderScoreBoard();
     }
