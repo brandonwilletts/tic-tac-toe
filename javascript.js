@@ -6,7 +6,7 @@ function gameboard() {
     ];
 
     //const renderBoard = () => console.table(board);
-    const addMarker = (x, y, marker) => board[y][x] = marker;
+    const addMarker = (x, y, marker) => board[x][y] = marker;
     const getBoard = () => board;
 
     //deleted renderBoard
@@ -16,9 +16,9 @@ function gameboard() {
 function gameController() {
     const board = gameboard();
     
-    const getBoard = function() {
-        return board.getBoard();
-    }
+    // const getBoard = function() {
+    //     return board.getBoard();
+    // }
 
     const players = [
         {
@@ -41,11 +41,11 @@ function gameController() {
     let turns = 0;
 
     //delete?
-    const playGame = function() {    
-        console.log(`${players[0].name} versus ${players[1].name}! Let's go!`);
-        board.renderBoard();
-        playRound();
-    }
+    // const playGame = function() {    
+    //     console.log(`${players[0].name} versus ${players[1].name}! Let's go!`);
+    //     board.renderBoard();
+    //     playRound();
+    // }
 
     const switchActivePlayer = function() {
         activePlayer === players[0] ? activePlayer = players[1] : activePlayer = players[0];
@@ -82,9 +82,7 @@ function gameController() {
 
     const playRound = function(row, column) {
         console.log(`${activePlayer.name}'s turn`)
-        
         board.addMarker(row, column, activePlayer.marker);
-        board.renderBoard();
         turns++;
         
         if (checkWinner(activePlayer)) {
@@ -99,7 +97,11 @@ function gameController() {
         }
     }
     
-    return { getPlayers, playGame, activePlayer, playRound }
+    return { 
+        getPlayers, 
+        //playGame, 
+        activePlayer, 
+        playRound }
 
 }
 
@@ -111,6 +113,9 @@ function screenController() {
     const getBoard = function() {
         return board.getBoard();
     }
+
+    const boardContainer = document.querySelector(".board");
+    boardContainer.addEventListener("click", boardClickHander);
 
 
     const getPlayerNames = function() {
@@ -158,7 +163,7 @@ function screenController() {
 
     const renderBoard = function() {
         const board = getBoard();
-        const boardContainer = document.querySelector(".board");
+        boardContainer.textContent = "";
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; j++) {
                 const square = document.createElement("div");
@@ -171,12 +176,24 @@ function screenController() {
         }        
     }
 
-    function boardClickHander () {
-        //add event listener to board
-        //send row and column as parameters to game.playRound(row, column)
+    const updateBoard = function() {
+        const board = getBoard();
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                const square = document.querySelector(`[data-row="${i}"][data-column="${j}"]`)
+                square.textContent = board[i][j];
+            }
+        } 
     }
 
-
+    function boardClickHander (event) {
+        const squareClicked = event.target;
+        if (squareClicked.dataset.row !== undefined && squareClicked.dataset.column !== undefined) {
+            board.addMarker(squareClicked.dataset.row, squareClicked.dataset.column, activePlayer.marker);
+        }
+        updateBoard();
+    }
+        
     getPlayerNames();
 
     
