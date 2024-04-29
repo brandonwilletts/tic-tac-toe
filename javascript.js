@@ -8,8 +8,6 @@ function gameboard() {
     const addMarker = (x, y, marker) => board[x][y] = marker;
     const getBoard = () => board;
     
-
-
     return { addMarker, getBoard }
 }
 
@@ -29,6 +27,13 @@ function gameController() {
     ];
     let activePlayer = players[0];
     let turns = 0;
+    let games = 0;
+
+    const newGame = function() {
+        turns = 0;
+        games % 2 === 0 ? activePlayer = players[0] : activePlayer = players[1];
+        resetBoard();
+    }
 
     const getPlayers = function() {
         return players;
@@ -84,20 +89,22 @@ function gameController() {
         return activePlayer
     }
 
-    // const resetBoard = function() {
-    //     for (let i = 0; i < board.length; i++){
-    //         for (let j = 0; j < board[i].length; j++) {
-    //             addMarker(i, j, "");
-    //         }
-    //     }
-    // }
+    const resetBoard = function() {
+        const boardArray = board.getBoard();
+        for (let i = 0; i < boardArray.length; i++){
+            for (let j = 0; j < boardArray[i].length; j++) {
+                board.addMarker(i, j, "");
+            }
+        }
+    }
     
     return { 
         getPlayers, 
         getActivePlayer, 
         playRound,
+        newGame,
         getBoard: board.getBoard,
-        //resetBoard: board.resetBoard
+        resetBoard
      }
 
 }
@@ -128,7 +135,8 @@ function screenController() {
         const gameplay = document.querySelector("#gameplay");
         gameplay.style.cssText = "display: flex;";
 
-        setDisplayText(`${game.getActivePlayer().name}'s turn`);
+        game.newGame();
+        setDisplayText(`${game.getActivePlayer().name} starts`);
         renderScoreBoard();
         renderBoard();
     }
@@ -188,13 +196,11 @@ function screenController() {
         }
     }
 
-    // const restartGameButton = document.querySelector("#restart");
-    // restartGameButton.addEventListener("click", event => {
-    //     //board.resetBoard();
-    //     game.newGame();
-    //     //updateBoard();
-    //     console.table(board.getBoard());
-    // })
+    const restartGameButton = document.querySelector("#restart");
+    restartGameButton.addEventListener("click", event => {
+        game.newGame();
+        updateBoard();
+    })
         
     getPlayerNames();
 
