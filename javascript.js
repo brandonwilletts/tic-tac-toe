@@ -28,9 +28,11 @@ function gameController() {
     let activePlayer = players[0];
     let turns = 0;
     let games = 0;
+    let gameStatus = "active";
 
     const newGame = function() {
         turns = 0;
+        gameStatus = "active";
         games % 2 === 0 ? activePlayer = players[0] : activePlayer = players[1];
         resetBoard();
     }
@@ -74,19 +76,25 @@ function gameController() {
         board.addMarker(row, col, activePlayer.marker);
 
         if (checkWinner()) {
-            console.log(`${activePlayer.name} wins!`);
+            gameStatus = "win";
             activePlayer.wins++;
-        } else if (!checkWinner() && turns === 9){
-            console.log("Tie!");
+            games++;
+        } else if (!checkWinner() && turns >= 8){
+            gameStatus = "tie";
+            games++;
         } 
         else {
             switchActivePlayer();
+            turns++;
         }
-        turns++;
     }
 
     const getActivePlayer = function() {
         return activePlayer
+    }
+
+    const getGameStatus = function() {
+        return gameStatus
     }
 
     const resetBoard = function() {
@@ -104,7 +112,8 @@ function gameController() {
         playRound,
         newGame,
         getBoard: board.getBoard,
-        resetBoard
+        resetBoard,
+        getGameStatus
      }
 
 }
@@ -171,7 +180,7 @@ function screenController() {
                 square.textContent = board[i][j];
                 boardContainer.appendChild(square);
             }
-        }        
+        }
     }
 
     const updateBoard = function() {
@@ -181,7 +190,15 @@ function screenController() {
                 square.textContent = board[i][j];
             }
         } 
-        setDisplayText(`${game.getActivePlayer().name}'s turn`);
+        if (game.getGameStatus() === "win") {
+            setDisplayText(`${game.getActivePlayer().name} wins!`);
+            restartGameButton.textContent = "New Game";
+        } else if (game.getGameStatus() === "tie") {
+            setDisplayText("Tie!");
+            restartGameButton.textContent = "New Game";
+        } else {
+            setDisplayText(`${game.getActivePlayer().name}'s turn`);
+        }
         renderScoreBoard();
     }
 
@@ -190,7 +207,10 @@ function screenController() {
         const rowClicked = squareClicked.dataset.row;
         const colClicked = squareClicked.dataset.column;
 
-        if (rowClicked !== undefined && colClicked !== undefined && board[rowClicked][colClicked] === "") {
+        if (rowClicked !== undefined 
+            && colClicked !== undefined 
+            && board[rowClicked][colClicked] === ""
+            && game.getGameStatus() === "active") {
             game.playRound(rowClicked, colClicked);
             updateBoard();
         }
