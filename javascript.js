@@ -5,21 +5,22 @@ function gameboard() {
         ["", "", ""]
     ];
 
-    //const renderBoard = () => console.table(board);
     const addMarker = (x, y, marker) => board[x][y] = marker;
     const getBoard = () => board;
+    
+    const resetBoard = function() {
+        for (let i = 0; i < board.length; i++){
+            for (let j = 0; j < board[i].length; j++) {
+                addMarker(i, j, "");
+            }
+        }
+    }
 
-    //deleted renderBoard
-    return { addMarker, getBoard }
+    return { addMarker, getBoard, resetBoard }
 }
 
 function gameController() {
     const board = gameboard();
-    
-    // const getBoard = function() {
-    //     return board.getBoard();
-    // }
-
     const players = [
         {
             id: "player1",
@@ -32,20 +33,12 @@ function gameController() {
             marker: "O"
         }
     ];
+    let activePlayer = players[0];
+    let turns = 0;
 
     const getPlayers = function() {
         return players;
     }
-
-    let activePlayer = players[0];
-    let turns = 0;
-
-    //delete?
-    // const playGame = function() {    
-    //     console.log(`${players[0].name} versus ${players[1].name}! Let's go!`);
-    //     board.renderBoard();
-    //     playRound();
-    // }
 
     const switchActivePlayer = function() {
         activePlayer === players[0] ? activePlayer = players[1] : activePlayer = players[0];
@@ -80,11 +73,8 @@ function gameController() {
         return result
     }
 
-    const playRound = function(row, column) {
-        console.log(`${activePlayer.name}'s turn`)
-        board.addMarker(row, column, activePlayer.marker);
-        turns++;
-        
+    //edit this
+    const playRound = function() {
         if (checkWinner(activePlayer)) {
             console.log(`${activePlayer.name} wins!`);
             activePlayer.wins++;
@@ -93,14 +83,17 @@ function gameController() {
         } 
         else {
             switchActivePlayer();
-            playRound();
         }
+        turns++;
+    }
+
+    const getActivePlayer = function() {
+        return activePlayer
     }
     
     return { 
         getPlayers, 
-        //playGame, 
-        activePlayer, 
+        getActivePlayer, 
         playRound }
 
 }
@@ -109,7 +102,7 @@ function screenController() {
     const game = gameController();
     const board = gameboard();
     const players = game.getPlayers();
-    const activePlayer = game.activePlayer;
+    
     const getBoard = function() {
         return board.getBoard();
     }
@@ -117,6 +110,7 @@ function screenController() {
     const boardContainer = document.querySelector(".board");
     boardContainer.addEventListener("click", boardClickHander);
 
+    
 
     const getPlayerNames = function() {
         const form = document.querySelector("form");
@@ -136,6 +130,7 @@ function screenController() {
         const gameplay = document.querySelector("#gameplay");
         gameplay.style.cssText = "display: flex;";
 
+        setDisplayText(`${game.getActivePlayer().name}'s turn`);
         renderScoreBoard();
         renderBoard();
     }
@@ -152,8 +147,6 @@ function screenController() {
 
         const player2Wins = document.querySelector("#player2-wins");
         player2Wins.textContent = `Wins: ${players[1].wins}`;
-
-        setDisplayText(`${activePlayer.name}'s turn`)
     }
 
     const setDisplayText = function(text) {
@@ -184,20 +177,31 @@ function screenController() {
                 square.textContent = board[i][j];
             }
         } 
+        setDisplayText(`${game.getActivePlayer().name}'s turn`);
+        renderScoreBoard();
     }
 
     function boardClickHander (event) {
         const squareClicked = event.target;
-        if (squareClicked.dataset.row !== undefined && squareClicked.dataset.column !== undefined) {
-            board.addMarker(squareClicked.dataset.row, squareClicked.dataset.column, activePlayer.marker);
+        const rowClicked = squareClicked.dataset.row;
+        const colClicked = squareClicked.dataset.column;
+
+        if (rowClicked !== undefined && colClicked !== undefined && getBoard()[rowClicked][colClicked] === "") {
+            board.addMarker(rowClicked, colClicked, game.getActivePlayer().marker);
+            game.playRound();
+            updateBoard();
         }
-        updateBoard();
     }
+
+    // const restartGameButton = document.querySelector("#restart");
+    // restartGameButton.addEventListener("click", event => {
+    //     //board.resetBoard();
+    //     game.newGame();
+    //     //updateBoard();
+    //     console.table(board.getBoard());
+    // })
         
     getPlayerNames();
-
-    
-    return { setDisplayText }
 
 }
 
